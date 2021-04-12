@@ -8,7 +8,7 @@ import java.util.Queue;
 public class Queue4 {
 
 
-    class priority {
+    static class priority {
         int document;
         int location;
 
@@ -55,8 +55,7 @@ public class Queue4 {
 
         }
 
-        int answer = seq[location];
-        return answer;
+        return seq[location];
     }
 
 
