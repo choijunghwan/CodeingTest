@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Heap2 {
-    class Jobs implements Comparable<Jobs>{
+    static class Jobs implements Comparable<Jobs>{
         int enterT;
         int workT;
 

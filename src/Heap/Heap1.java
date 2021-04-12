@@ -15,7 +15,7 @@ public class Heap1 {
         int answer = 0;
 
         while (!priorityQueue.isEmpty()) {
-            if (priorityQueue.peek() >= K && priorityQueue.size() >= 1) {
+            if (priorityQueue.peek() >= K) {
                 break;
             } else if (priorityQueue.size() == 1) {
                 answer = -1;
