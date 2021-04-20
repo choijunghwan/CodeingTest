@@ -1,6 +1,5 @@
 package DynamicProgramming;
 
-import java.util.ArrayList;
 
 public class DP4 {
     public static void main(String[] args) {
