@@ -1,5 +1,7 @@
 package Greedy;
 
+import java.util.Stack;
+
 public class Greedy3 {
     public static void main(String[] args) {
         String number = "1924";
@@ -117,5 +119,24 @@ public class Greedy3 {
         }
 
         return sb.toString();
+    }
+
+    public static String stack_solution(String number, int k) {
+        char[] result = new char[number.length() - k];
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < number.length(); i++) {
+            char c = number.charAt(i);
+            while (!stack.isEmpty() && stack.peek() < c && k-- > 0) {
+                stack.pop();
+            }
+            stack.push(c);
+        }
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = stack.get(i);
+        }
+
+        return new String(result);
     }
 }
