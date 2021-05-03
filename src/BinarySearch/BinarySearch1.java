@@ -30,6 +30,7 @@ public class BinarySearch1 {
                 passNum += mid / t;
             }
 
+
             if (passNum < n){
                 start = mid +1;
             } else{              // passNum == n 이여도 그때의 시간이 최소가 아닐수 있으므로
