@@ -1,6 +1,34 @@
 package KAKAO;
-
+import java.util.*;
 public class KAKAO_2020_2 {
+    static int pos;
+    static boolean isCorrect(String str) {
+        boolean ret = true;
+        int left = 0, right = 0;
+        Stack<Character> mystack = new Stack<>();
+
+        for (int i = 0; i<str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                left++;
+                mystack.push('(');
+            } else {
+                right++;
+                if (mystack.empty()) {
+                    ret = false;
+                } else {
+                    mystack.pop();
+                }
+            }
+
+            if (left == right) {
+                pos = i + 1;
+                return ret;
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         String p = ")(";
 
@@ -9,63 +37,26 @@ public class KAKAO_2020_2 {
     }
 
     public static String solution(String p) {
-        String result = "";
+        if (p.isEmpty()) return p;
 
+        boolean correct = isCorrect(p);
+        String u = p.substring(0, pos);
+        String v = p.substring(pos, p.length());
 
-        return sep(p, result);
-    }
-
-    public static String sep(String s, String result) {
-        String u = new String();
-        String v = new String();
-        int count = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                ++count;
-            } else if (s.charAt(i) == ')') {
-                --count;
-            }
-
-            if (count == 0) {
-                u = s.substring(0, i+1);
-                v = s.substring(i+1, s.length());
-                break;
-            }
+        if (correct) {
+            return u + solution(v);
         }
 
-        for (int i = 0; i < u.length(); i++){
+        String answer = "(" + solution(v) + ")";
+        for (int i = 1; i < u.length() - 1; i++) {
             if (u.charAt(i) == '(') {
-                ++count;
-            } else if (u.charAt(i) == ')') {
-                --count;
-            }
-
-            if (count < 0){
-                u = convert(u);
-                break;
+                answer += ")";
+            } else {
+                answer += "(";
             }
         }
-        result += u;
 
-        if (v.isEmpty()) {
-            return result;
-        } else {
-            result = sep(v,result);
-        }
-
-        return result;
-
+        return answer;
     }
 
-    public static String convert(String q) {
-
-        q.replace("(", ".");
-        q.replace(")", "(");
-        q.replace(".", ")");
-
-        String str = "(";
-        str.concat(q.substring(1,q.length()-1));
-        str.concat(")");
-        return str;
-    }
 }
