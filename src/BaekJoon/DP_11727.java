@@ -18,5 +18,6 @@ public class DP_11727 {
         }
 
         System.out.println(dp[num]);
+
     }
 }
