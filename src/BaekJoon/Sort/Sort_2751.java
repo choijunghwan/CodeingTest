@@ -1,4 +1,4 @@
-package BaekJoon;
+package BaekJoon.Sort;
 
 
 import java.io.*;
