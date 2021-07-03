@@ -19,5 +19,6 @@ public class Main {
         int result = heap2.solution(jobs);
         System.out.println("result = " + result);
 
+
     }
 }
