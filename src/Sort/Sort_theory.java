@@ -78,6 +78,11 @@ public class Sort_theory {
         // 2차원 배열 정렬
         int[][] arr3 = {{-20, 15}, {-14, -5}, {-18, -13}, {-5, -3}};
 
+        Arrays.sort(arr3);
+        for (int[] arr : arr3){
+            System.out.println(arr[0] + " " + arr[1]);
+        }
+
         // 오름차순
         Arrays.sort(arr3, new Comparator<int[]>() {
             @Override
