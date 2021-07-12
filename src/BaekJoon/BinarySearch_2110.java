@@ -56,6 +56,5 @@ public class BinarySearch_2110 {
         }
 
         System.out.println(high);
-
     }
 }
