@@ -48,11 +48,4 @@ public class programming3 {
         return answer;
     }
 
-    private static int solution1(String line1, String line2) {
-        int answer = 0;
-        int len2 = line2.length();
-        int len1 = line1.length();
-        int blank = 0;
-    }
-
 }
