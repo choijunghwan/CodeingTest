@@ -12,7 +12,7 @@ public class programming3 {
     public static void main(String[] args) {
         String line1 = "abbbcbbb";
         String line2 = "bbb";
-        int result = solution(line1, line2);
+        int result = solution1(line1, line2);
         System.out.println(result);
     }
 
@@ -48,11 +48,47 @@ public class programming3 {
         return answer;
     }
 
+    // 정규표현식을 사용하지 않은 이유
+    // 정규표현식은 하나의 조건에 대해 문자열을 검증할때 주로 사용한다.
+    // 하지만 위 문제의 경우 조건이 계속해서 변하며
+    // 정규표현식은 문자열이 포함되어 있는지 true, false로 반환하는 반면에
+    // 위 문제는 문자열이 몇개 포함되어 있는지 갯수를 세어야 한다.
+    // 그래서 abbbabbb 의 경우 bbb를 정규표현식으로 체크하면 2개가 나오는것이 아닌 true가 나오므로
+    // 갯수를 셀려고 할때는 적합하지 않다.
     private static int solution1(String line1, String line2) {
         int answer = 0;
         int len2 = line2.length();
         int len1 = line1.length();
         int blank = 0;
+
+        while (true) {
+            int changeLen = len2 + (len2 - 1) * blank;
+
+            if (changeLen > len1) {
+                break;
+            }
+
+            String temp = line1;
+            String pattern ="^.*";
+            for (int j = 0; j < len2; j++) {
+                pattern += Character.toString(line2.charAt(j));
+                if (j != len2 - 1) {
+                    pattern += ".{" + blank + "}";
+                }
+            }
+            pattern += ".*$";
+            boolean validation = temp.matches(pattern);
+            while (validation) {
+                temp = temp.replaceFirst(pattern, "   ");
+                answer++;
+                validation = temp.matches(pattern);
+            }
+
+
+            blank++;
+        }
+
+        return answer;
     }
 
 }

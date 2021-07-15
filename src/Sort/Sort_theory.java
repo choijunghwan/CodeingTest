@@ -45,7 +45,7 @@ public class Sort_theory {
         System.out.println("stringArr2 : " + Arrays.toString(stringArr2));
 
         // Comparator 인터페이스를 직접 구현해서 적용
-        Arrays.sort(stringArr3, new CustomComparator());
+        Arrays.sort(stringArr3, new customComparator());
         System.out.println("stringArr3 : " + Arrays.toString(stringArr3));
 
         // Comparator 구현 클래스 정의 없이 Comparator 인스턴스 생성과 동시에 compare() 메서드를 오버라이드
@@ -120,7 +120,7 @@ public class Sort_theory {
 
 }
 
-class CustomComparator implements Comparator<String> {
+class customComparator implements Comparator<String> {
 
     @Override
     public int compare(String o1, String o2) {
