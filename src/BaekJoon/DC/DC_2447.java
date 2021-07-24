@@ -51,14 +51,6 @@ public class DC_2447 {
                 }
             }
             return;
-            /*maps[x][y] = 1;
-            maps[x][y+1] = 1;
-            maps[x][y+2] = 1;
-            maps[x+1][y] = 1;
-            maps[x+1][y+2] = 1;
-            maps[x+2][y] = 1;
-            maps[x+2][y+1] = 1;
-            maps[x+2][y+2] = 1;*/
         }
 
         len /= 3;
