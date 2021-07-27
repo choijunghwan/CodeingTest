@@ -1,9 +1,9 @@
 package BaekJoon.Graph;
 
 import java.io.BufferedReader;
-        import java.io.IOException;
-        import java.io.InputStreamReader;
-        import java.util.StringTokenizer;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Graph_1991 {
     static Node node;
@@ -82,14 +82,16 @@ public class Graph_1991 {
             searchNode(node.right, data, leftData, rightData);
         }
     }
-}
 
+
+}
 class Node {
     String data;
-    Node left;
-    Node right;
+    BaekJoon.Graph.Node left;
+    BaekJoon.Graph.Node right;
 
     Node(String data) {
         this.data = data;
     }
 }
+
