@@ -1,5 +1,5 @@
-import Heap.Heap2;
-import QUEUE.Queue4;
+import Programmers.Heap.Heap2;
+import Programmers.QUEUE.Queue4;
 
 public class Main {
     public static void main(String[] args) {
