@@ -1,8 +1,6 @@
 package Programmers.WeeklyChallenge;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Solve3 {
     public static void main(String[] args) {
@@ -29,20 +27,28 @@ public class Solve3 {
         int result = solution(game_board, table);
         System.out.println("result = " + result);
     }
-    // game_board를 돌면서 빈공간이 나오면 빈공간에 맞는 퍼즐조각을 table에서 찾는다.
 
-    // 빈공간이 있으면 table에서 존재하는 조각들과 일일이 비교한다.
-    // 비교할때 조각을 0, 90, 180, 270 회전한 경우를 모두 대조해본다.
-    // 만약 대조해 조각이 일치하면 채워준다.
-    public static int solution(int[][] game_board, int[][] table) {
+    static ArrayList<String> emptyList = new ArrayList<>();
+    static int N;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {-1, 1, 0, 0};
+
+    private static int solution(int[][] game_board, int[][] table) {
+        N = game_board.length;
         int answer = 0;
-        for (int i = 0; i < game_board.length; i++) {
-            for (int j = 0; j < game_board.length; j++) {
-                if (game_board[i][j] == 0) {
-                    // 게임 보드의 퍼즐 조각을 찾아 반환.
-                    int[][] puzzle = bfsBoard(game_board, i, j);
 
-                    answer += searchPuzzle(puzzle, table);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (game_board[i][j] == 0) {
+                    emptyList.add(bfs(game_board, i, j, 0));
+                }
+            }
+        }
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (table[i][j] == 1) {
+                    answer += find(bfs(table, i, j, 1));
                 }
             }
         }
@@ -50,188 +56,119 @@ public class Solve3 {
         return answer;
     }
 
-    // (x,y) (y,-x) (-x,-y) (-y,x)
-    private static int[][] rotatePuzzle(int[][] puzzle, int k) {
-        if (k == 0) {
-            return puzzle;
-        }
+    private static int find(String s) {
+        int point = 0;
 
-        int[][] rotate = new int[puzzle.length][2];
-
-        // 90도 회전
-        if (k == 1){
-            for (int i = 0; i < puzzle.length; i++) {
-                int x = puzzle[i][0];
-                int y = puzzle[i][1];
-                rotate[i][0] = y;
-                rotate[i][1] = -x;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                point++;
             }
         }
 
-        // 180도 회전
-        if (k == 2){
-            for (int i = 0; i < puzzle.length; i++) {
-                int x = puzzle[i][0];
-                int y = puzzle[i][1];
-                rotate[i][0] = -x;
-                rotate[i][1] = -y;
-            }
-        }
+        for (int i = 0; i < emptyList.size(); i++) {
+            String str = emptyList.get(i);
 
-        // 270도 회전
-        if (k == 3){
-            for (int i = 0; i < puzzle.length; i++) {
-                int x = puzzle[i][0];
-                int y = puzzle[i][1];
-                rotate[i][0] = -y;
-                rotate[i][1] = x;
-            }
-        }
+            for (int j = 0; j < 4; j++) {
+                str = rotate(str);
 
-        return rotate;
-    }
-
-    private static int searchPuzzle(int[][] puzzle, int[][] table) {
-        int count = 0;
-        int len = table.length;
-
-        for (int k = 0; k < 4; k++) {
-            int[][] resultPuzzle = rotatePuzzle(puzzle, k);
-            int[][] serveTable = new int[len][len];
-            for (int i = 0; i < len; i++) {
-                serveTable[i] = Arrays.copyOf(table[i], len);
-            }
-
-            for (int i = 0; i < len; i++) {
-                for (int j = 0; j < len; j++) {
-                    if (serveTable[i][j] == 1) {
-                        int[][] tablePuzzle = bfsTable(serveTable, i, j);
-
-                        if (resultPuzzle.length == tablePuzzle.length) {
-                            for (int[] tp : tablePuzzle) {
-                                serveTable[i + tp[0]][j + tp[1]] = 1;
-                            }
-                        } else {
-                            continue;
-                        }
-
-                        boolean check = true;
-                        for (int[] tp : resultPuzzle) {
-                            int nextX = i + tp[0];
-                            int nextY = j + tp[1];
-                            if (nextX >= 0 && nextX < len && nextY >= 0 && nextY < len) {
-                                if (serveTable[i + tp[0]][j + tp[1]] != 1) {
-                                    check = false;
-                                    break;
-                                }
-                            } else {
-                                check = false;
-                                break;
-                            }
-
-                        }
-
-                        if (check) {
-                            count += tablePuzzle.length;
-                            for (int[] tp : tablePuzzle) {
-                                table[i + tp[0]][j + tp[1]] = 0;
-                            }
-                            return count;
-                        }
-
-                    }
+                if (s.equals(str)) {
+                    emptyList.remove(i);
+                    return point;
                 }
             }
         }
 
-        return count;
+        return 0;
     }
 
-    private static int[][] bfsTable(int[][] serveTable, int row, int col) {
+    private static String rotate(String s) {
+        String str = "";
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (x == 0) {
+                if (s.charAt(i) != ' ') {
+                    y++;
+                }
+            }
+            if (s.charAt(i) == ' ') {
+                x++;
+            }
+        }
+
+        char[][] arr = new char[x][y];
+        StringTokenizer st = new StringTokenizer(s);
+
+        for (int i = 0; i < x; i++) {
+            arr[i] = st.nextToken().toCharArray();
+        }
+
+        for (int j = 0; j < y; j++) {
+            for (int i = x - 1; i >= 0; i--) {
+                str += arr[i][j];
+            }
+            str += " ";
+        }
+
+        return str;
+    }
+
+    private static String bfs(int[][] arr, int i, int j, int mode) {
+        // mode 0 : game_board, mode 1 : table
+        String s = "";
         Queue<Point> queue = new LinkedList<>();
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {1, 0, -1, 0};
+        boolean[][] visitied = new boolean[N][N];
 
-        int[][] locationPoint = new int[6][2];
-        int size = 1;
+        int x_min = i;
+        int x_max = i;
+        int y_min = j;
+        int y_max = j;
 
-        queue.add(new Point(row, col));
-
-        locationPoint[0][0] = 0;
-        locationPoint[0][1] = 0;
-
-        serveTable[row][col] = 0;
+        visitied[i][j] = true;
+        arr[i][j] = (mode + 1) % 2;
+        queue.add(new Point(i, j));
 
         while (!queue.isEmpty()) {
-            Point p = queue.poll();
+            Point poll = queue.poll();
+            int x = poll.x;
+            int y = poll.y;
 
-            for (int i = 0; i < 4; i++) {
-                int nextX = p.x + dx[i];
-                int nextY = p.y + dy[i];
+            x_min = Math.min(x_min, x);
+            x_max = Math.max(x_max, x);
+            y_min = Math.min(y_min, y);
+            y_max = Math.max(y_max, y);
 
-                if (nextX >= 0 && nextX < serveTable.length && nextY >= 0 && nextY < serveTable.length) {
-                    if (serveTable[nextX][nextY] == 1) {
-                        queue.add(new Point(nextX, nextY));
-                        serveTable[nextX][nextY] = 0;
+            for (int k = 0; k < 4; k++) {
+                int nextX = x + dx[k];
+                int nextY = y + dy[k];
 
-                        locationPoint[size][0] = nextX - row;
-                        locationPoint[size][1] = nextY - col;
-                        size++;
-                    }
+                if (!isBoundary(nextX, nextY)){
+                    continue;
+                }
+
+                if (arr[nextX][nextY] == mode && !visitied[nextX][nextY]) {
+                    visitied[nextX][nextY] = true;
+                    arr[nextX][nextY] = (mode + 1) % 2;
+                    queue.add(new Point(nextX, nextY));
                 }
             }
         }
 
-        int[][] result = new int[size][2];
-        for (int i = 0; i < size; i++) {
-            result[i][0] = locationPoint[i][0];
-            result[i][1] = locationPoint[i][1];
-        }
-        return result;
-    }
-
-    private static int[][] bfsBoard(int[][] game_board, int row, int col) {
-        Queue<Point> queue = new LinkedList<>();
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {1, 0, -1, 0};
-
-        int[][] locationPoint = new int[6][2];
-        int size = 1;
-
-        queue.add(new Point(row, col));
-
-        locationPoint[0][0] = 0;
-        locationPoint[0][1] = 0;
-
-        game_board[row][col] = 1;
-
-        while (!queue.isEmpty()) {
-            Point p = queue.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nextX = p.x + dx[i];
-                int nextY = p.y + dy[i];
-
-                if (nextX >= 0 && nextX < game_board.length && nextY >= 0 && nextY < game_board.length) {
-                    if (game_board[nextX][nextY] == 0) {
-                        queue.add(new Point(nextX, nextY));
-                        game_board[nextX][nextY] = 1;
-
-                        locationPoint[size][0] = nextX - row;
-                        locationPoint[size][1] = nextY - col;
-                        size++;
-                    }
-                }
+        for (int x = x_min; x <= x_max; x++) {
+            for (int y = y_min; y <= y_max; y++) {
+                s += visitied[x][y] ? "1" : "0";
             }
+            s += " ";
         }
 
-        int[][] result = new int[size][2];
-        for (int i = 0; i < size; i++) {
-            result[i][0] = locationPoint[i][0];
-            result[i][1] = locationPoint[i][1];
-        }
-        return result;
+        return s;
     }
+
+    private static boolean isBoundary(int x, int y) {
+        return x >= 0 && x < N && y >= 0 && y < N;
+    }
+
 }
 
 class Point {
