@@ -1,11 +1,24 @@
 package Programmers.WeeklyChallenge;
 
+import java.util.Stack;
+
 public class Solve11 {
 
-    int[] dx = {0, 0, 1, -1};
-    int[] dy = {-1, 0, 0, 0};
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {-1, 1, 0, 0};
 
-    public int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
+    public static void main(String[] args) {
+        int[][] rectangle = {{1, 1, 7, 4}, {3, 2, 5, 5}, {4, 3, 6, 9}, {2, 6, 8, 8}};
+        int characterX = 1;
+        int characterY = 3;
+        int itemX = 7;
+        int itemY = 8;
+
+        int result = solution(rectangle, characterX, characterY, itemX, itemY);
+
+    }
+
+    public static int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
         int start_X = characterX * 2;
         int start_Y = characterY * 2;
         int end_X = itemX * 2;
@@ -51,7 +64,7 @@ public class Solve11 {
                 int next_X = point.x + dx[i];
                 int next_Y = point.y + dy[i];
 
-                if (map[next_X][next_Y]) {
+                if (map[next_Y][next_X]) {
                     stack.add(new Point(next_X, next_Y));
                 }
             }
@@ -61,10 +74,10 @@ public class Solve11 {
 
 
         int answer = Math.min(route, cnt - route);
-        return answer;
+        return answer/2;
     }
 
-    class Point {
+    static class Point {
         int x;
         int y;
 
