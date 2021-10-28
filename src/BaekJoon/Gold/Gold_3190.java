@@ -59,6 +59,7 @@ public class Gold_3190 {
             if (isFinish(nextX, nextY)) break;
 
             if (map[nextX][nextY] == 1) {
+                map[nextX][nextY] = 0;
                 snake.add(new int[]{nextX, nextY});
             } else {
                 snake.add(new int[]{nextX, nextY});
