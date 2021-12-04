@@ -31,24 +31,20 @@ public class StackToQueue {
             outBox = new Stack<>();
         }
 
+        // 데이터가 들어오면 무조건 inBox에 넣어준다.
         void inPush(T item) {
-            if (inBox.isEmpty()) {
-                inBox.push(item);
-            } else {
+            inBox.push(item);
+        }
+
+        // 데이터를 추출하게 되면
+        // outBox로 데이터를 옮겨서 값을 하나씩 추출해준다.
+        Object outPop() {
+            if (outBox.isEmpty()) {
                 while (!inBox.isEmpty()) {
                     outBox.push(inBox.pop());
                 }
-
-                inBox.push(item);
-
-                while (!outBox.isEmpty()) {
-                    inBox.push(outBox.pop());
-                }
             }
-        }
-
-        Object outPop() {
-            return inBox.pop();
+            return outBox.pop();
         }
     }
 }
